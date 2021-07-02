@@ -209,7 +209,7 @@ class DQN(nn.Module):
         self.policy_net = Net().to(self.device)
         self.target_net = Net().to(self.device)
         if os.path.exists("model.pth"):
-            self.policy_net.load_state_dict(torch.load("model.pth"))
+            self.policy_net.load_state_dict(torch.load("model.pth", map_location="cpu"))
         self.target_net.load_state_dict(self.policy_net.state_dict())
         self.target_net.eval()
 
@@ -256,7 +256,7 @@ class DQN(nn.Module):
         self.optimizer.step()
 
 
-class DQNAgent(agents.BaseAgent):
+class DQNAgent(DockerAgentRunner):
     def __init__(self, model):
         super(DQNAgent, self).__init__()
         self.model = model
